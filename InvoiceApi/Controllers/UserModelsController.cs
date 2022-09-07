@@ -112,6 +112,7 @@ namespace InvoiceApi.Controllers
         //Auth Register + Login
         // POST: api/user
        
+        /*
         [HttpPost]
         public async Task<ActionResult<UserModel>> PostUserModel(UserModel userModel)
         {
@@ -124,6 +125,7 @@ namespace InvoiceApi.Controllers
 
             return CreatedAtAction("GetUserModel", new { id = userModel.Id }, userModel);
         }
+        */
 
         //Bu olmucak
         // DELETE: api/user/5

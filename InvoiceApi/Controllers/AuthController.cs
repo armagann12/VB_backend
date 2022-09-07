@@ -24,7 +24,7 @@ namespace InvoiceApi.Controllers
         public static UserModel userModel = new UserModel();
 
 
-        [HttpPost("register")]
+        [HttpPost("user/register")]
         public async Task<ActionResult<UserModel>>Register(UserModel request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -43,7 +43,7 @@ namespace InvoiceApi.Controllers
             return Ok(userModel); 
         }
 
-        [HttpPost("login")]
+        [HttpPost("user/login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
             if (userModel.Mail != request.Mail)

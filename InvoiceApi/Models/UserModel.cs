@@ -27,7 +27,9 @@ namespace InvoiceApi.Models
         [Required]
         public int TC { get; set; }
 
+        [JsonIgnore]
         public byte[]? PasswordHash { get; set; }
+        [JsonIgnore]
         public byte[]? PasswordSalt { get; set; }
 
 
