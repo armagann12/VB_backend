@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace InvoiceApi.Models
 {
@@ -20,6 +21,7 @@ namespace InvoiceApi.Models
 
         [Required]
         [StringLength(100)]
+        [JsonIgnore]
         public string? password { get; set; }    //Password kaydolmucak db ye
 
 
