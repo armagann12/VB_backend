@@ -23,8 +23,8 @@ namespace InvoiceApi.Models
         public string? password { get; set; }    //Password kaydolmucak db ye
 
 
-        public int invoiceId { get; set; }
-        public InvoiceModel? InvoiceModel { get; set; }  
+        //public int invoiceId { get; set; }
+        //public InvoiceModel? InvoiceModel { get; set; }  
 
     }
 }

@@ -27,8 +27,8 @@ namespace InvoiceApi.Models
 
 
 
-        public int invoiceId { get; set; } //array olucak burası
-        public InvoiceModel? InvoiceModel { get; set; }  //array olucak burası
+        //public int invoiceId { get; set; } //array olucak burası
+        //public InvoiceModel? InvoiceModel { get; set; }  //array olucak burası
 
 
     }

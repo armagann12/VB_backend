@@ -23,9 +23,9 @@ namespace InvoiceApi.Models
 
         //BURAYA BAK 
 
-        public string? institutionId { get; set; }   //otomatik ekleyen kurum direk
+        public int InstitutionModelId { get; set; }   //otomatik ekleyen kurum direk
         public InstitutionModel? InstitutionModel { get; set; } //otomatik ekleyen kurum direk
-        public int userId { get; set; } 
+        public int UserModelId { get; set; } 
         public UserModel? UserModel { get; set; }
     }
 }
