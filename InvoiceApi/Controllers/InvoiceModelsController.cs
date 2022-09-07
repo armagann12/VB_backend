@@ -36,7 +36,7 @@ namespace InvoiceApi.Controllers
         }
 
         //USER
-        //getUserInvoices
+        //getUserInvoice
         // GET: api/invoice/user/5
         [HttpGet("user/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetUserInvoiceModel(int id)
@@ -100,7 +100,7 @@ namespace InvoiceApi.Controllers
             {
                 return BadRequest();
             }
-
+            
             _context.Entry(invoiceModel).State = EntityState.Modified;
 
             try
@@ -122,6 +122,7 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
+        //Otomatik kurum idsini girecek
         //KURUM
         // POST: api/invoice
         
@@ -138,7 +139,7 @@ namespace InvoiceApi.Controllers
             _context.InvoiceModels.Add(invoiceModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetInvoiceModel", new { id = invoiceModel.Id }, invoiceModel);
+            return CreatedAtAction("PostInvoiceModel", new { id = invoiceModel.Id }, invoiceModel);
         }
 
         //KURUM
@@ -164,6 +165,44 @@ namespace InvoiceApi.Controllers
         }
 
         //PAY Invoice sadece status değişecek USER kullanıcak
+
+        [HttpGet("pay/{id}")]
+        public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
+        {
+            if (_context.InvoiceModels == null)
+            {
+                return NotFound();
+            }
+            var invoiceModel = await _context.InvoiceModels.FindAsync(id);
+            
+
+            if (invoiceModel == null)
+            {
+                return NotFound();
+            }
+
+            invoiceModel.status = true;
+
+            _context.Entry(invoiceModel).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvoiceModelExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return invoiceModel;
+        }
 
 
 
