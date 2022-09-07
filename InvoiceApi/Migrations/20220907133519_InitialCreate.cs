@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,10 +15,10 @@ namespace InvoiceApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,11 +31,13 @@ namespace InvoiceApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    firstName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    TC = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    TC = table.Column<int>(type: "int", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,11 +50,11 @@ namespace InvoiceApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    price = table.Column<int>(type: "int", nullable: false),
-                    detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: false),
-                    month = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    Detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Month = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InstitutionModelId = table.Column<int>(type: "int", nullable: false),
                     UserModelId = table.Column<int>(type: "int", nullable: false)
                 },

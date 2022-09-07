@@ -9,23 +9,26 @@ namespace InvoiceApi.Models
 
         [Required]
         [StringLength(15)]
-        public string? firstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Required]
         [StringLength(15)]
-        public string? lastName { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        public string? mail { get; set; }
+        public string? Mail { get; set; }
 
-        [Required]
+        
         [StringLength(15)]
-        [JsonIgnore]
-        public string? password { get; set; }   //Password kaydolmucak db ye
+        
+        public string? Password { get; set; }   //Password kaydolmucak db ye
 
         [Required]
         public int TC { get; set; }
+
+        public byte[]? PasswordHash { get; set; }
+        public byte[]? PasswordSalt { get; set; }
 
 
 

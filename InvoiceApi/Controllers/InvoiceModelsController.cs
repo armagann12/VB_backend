@@ -133,8 +133,8 @@ namespace InvoiceApi.Controllers
           {
               return Problem("Entity set 'DataContext.InvoiceModels'  is null.");
           }
-            invoiceModel.month = DateTime.Now.ToString("MM");
-            invoiceModel.status = false;
+            invoiceModel.Month = DateTime.Now.ToString("MM");
+            invoiceModel.Status = false;
 
             _context.InvoiceModels.Add(invoiceModel);
             await _context.SaveChangesAsync();
@@ -181,7 +181,7 @@ namespace InvoiceApi.Controllers
                 return NotFound();
             }
 
-            invoiceModel.status = true;
+            invoiceModel.Status = true;
 
             _context.Entry(invoiceModel).State = EntityState.Modified;
 

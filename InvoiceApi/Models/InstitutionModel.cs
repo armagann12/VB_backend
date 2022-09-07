@@ -9,20 +9,19 @@ namespace InvoiceApi.Models
 
         [Required]
         [StringLength(20)]
-        public string? name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string? detail { get; set; }
+        public string? Detail { get; set; }
 
         [Required]
         [EmailAddress]
-        public string? mail { get; set; }
+        public string? Mail { get; set; }
 
-        [Required]
+        
         [StringLength(100)]
-        [JsonIgnore]
-        public string? password { get; set; }    //Password kaydolmucak db ye
+        public string? Password { get; set; }    //Password kaydolmucak db ye
 
 
         //public int invoiceId { get; set; }

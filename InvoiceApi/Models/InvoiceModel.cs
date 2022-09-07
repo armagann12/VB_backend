@@ -8,17 +8,17 @@ namespace InvoiceApi.Models
 
         [Required]
         [StringLength(20)]
-        public string? name { get; set; }
+        public string? Name { get; set; }
         
         [Required]
         [Range(0, 100.000)]
-        public int price { get; set; }
+        public int Price { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string? detail { get; set; }
-        public bool status { get; set; }
-        public string? month { get; set; }
+        public string? Detail { get; set; }
+        public bool Status { get; set; }
+        public string? Month { get; set; }
 
 
         //BURAYA BAK 
