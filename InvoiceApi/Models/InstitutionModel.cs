@@ -20,8 +20,13 @@ namespace InvoiceApi.Models
         public string? Mail { get; set; }
 
         
-        [StringLength(100)]
-        public string? Password { get; set; }    //Password kaydolmucak db ye
+        [StringLength(15)]
+        public string? Password { get; set; } 
+
+        [JsonIgnore]
+        public byte[]? PasswordHash { get; set; }
+        [JsonIgnore]
+        public byte[]? PasswordSalt { get; set; }
 
 
         //public int invoiceId { get; set; }

@@ -18,7 +18,9 @@ namespace InvoiceApi.Migrations
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    Password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
