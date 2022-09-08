@@ -29,8 +29,5 @@ namespace InvoiceApi.Models
         public byte[]? PasswordSalt { get; set; }
 
 
-        //public int invoiceId { get; set; }
-        //public InvoiceModel? InvoiceModel { get; set; }  
-
     }
 }

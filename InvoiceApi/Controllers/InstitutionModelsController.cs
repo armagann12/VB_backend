@@ -25,7 +25,6 @@ namespace InvoiceApi.Controllers
             _userService = userService;
         }
 
-        //MAYBE User
         // GET: api/institution
         [Authorize(Roles = "User")]
         [HttpGet]
@@ -38,8 +37,7 @@ namespace InvoiceApi.Controllers
             return await _context.InstitutionModels.ToListAsync();
         }
 
-        //MAYBE User
-        // GET: api/institution/5
+        // GET: api/institution/id
         [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public async Task<ActionResult<InstitutionModel>> GetInstitutionModel(int id)
@@ -58,9 +56,7 @@ namespace InvoiceApi.Controllers
             return institutionModel;
         }
 
-        //Institution
-        //GetMe
-        // GET: api/institution/me/5
+        // GET: api/institution/me
         [Authorize(Roles = "Institution")]
         [HttpGet("me")]
         public async Task<ActionResult<InstitutionModel>> GetMyInstitutionModel()
@@ -81,8 +77,6 @@ namespace InvoiceApi.Controllers
             return institutionModel;
         }
 
-        //Institution
-        //UpdateMe
         // PUT: api/institution/me
         [Authorize(Roles = "Institution")]
         [HttpPut("me")]
@@ -117,46 +111,6 @@ namespace InvoiceApi.Controllers
 
             return NoContent();
         }
-
-        //Auth Register + Login
-        // POST: api/institution
-        /*
-        [HttpPost]
-        public async Task<ActionResult<InstitutionModel>> PostInstitutionModel(InstitutionModel institutionModel)
-        {
-          if (_context.InstitutionModels == null)
-          {
-              return Problem("Entity set 'DataContext.InstitutionModels'  is null.");
-          }
-            _context.InstitutionModels.Add(institutionModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInstitutionModel", new { id = institutionModel.Id }, institutionModel);
-        }
-        */
-
-        //Bu olmucak
-        // DELETE: api/institution/5
-        /*
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInstitutionModel(int id)
-        {
-            if (_context.InstitutionModels == null)
-            {
-                return NotFound();
-            }
-            var institutionModel = await _context.InstitutionModels.FindAsync(id);
-            if (institutionModel == null)
-            {
-                return NotFound();
-            }
-
-            _context.InstitutionModels.Remove(institutionModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-        */
 
         private bool InstitutionModelExists(int id)
         {

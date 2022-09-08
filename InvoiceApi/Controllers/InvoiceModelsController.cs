@@ -25,8 +25,6 @@ namespace InvoiceApi.Controllers
             _userService = userService;
         }
 
-        //USER
-        //getAllUsersInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
         [Authorize(Roles = "User")]
@@ -47,8 +45,6 @@ namespace InvoiceApi.Controllers
             return await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(id)).ToListAsync();
         }
 
-        //USER
-        //getUserInvoice
         // GET: api/invoice/user/5
         [Authorize(Roles = "User")]
         [HttpGet("user/{id}")]
@@ -74,8 +70,6 @@ namespace InvoiceApi.Controllers
             return invoiceModel;
         }
 
-        //KURUM
-        //getAllInstitutionsInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
         [Authorize(Roles = "Institution")]
@@ -94,8 +88,6 @@ namespace InvoiceApi.Controllers
             return await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(id)).ToListAsync();
         }
 
-        //KURUM
-        //getInstitutionInvoices
         // GET: api/invoice/user/5
         [Authorize(Roles = "Institution")]
         [HttpGet("institution/{id}")]
@@ -120,8 +112,6 @@ namespace InvoiceApi.Controllers
             return invoiceModel;
         }
 
-        //KURUM
-        //UpdateMyInvoice
         // PUT: api/invoice/me/5
         [Authorize(Roles = "Institution")]
         [HttpPut("me/{id}")]
@@ -163,8 +153,6 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
-        //Otomatik kurum idsini girecek
-        //KURUM
         // POST: api/invoice
         [Authorize(Roles = "Institution")]
         [HttpPost]
@@ -187,8 +175,6 @@ namespace InvoiceApi.Controllers
             return CreatedAtAction("PostInvoiceModel", new { id = invoiceModel.Id }, invoiceModel);
         }
 
-        //KURUM
-        //DeleteMyInvoice
         // DELETE: api/invoice/me/5
         [Authorize(Roles = "Institution")]
         [HttpDelete("me/{id}")]
@@ -220,9 +206,6 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
-        //PAY Invoice sadece status değişecek USER kullanıcak
-
-        //kendi faturalarını ödeyebilecek sadece
         [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)

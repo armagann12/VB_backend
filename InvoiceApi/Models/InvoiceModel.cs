@@ -20,11 +20,8 @@ namespace InvoiceApi.Models
         public bool Status { get; set; }
         public string? Month { get; set; }
 
-
-        //BURAYA BAK 
-
-        public int InstitutionModelId { get; set; }   //otomatik ekleyen kurum direk
-        public InstitutionModel? InstitutionModel { get; set; } //otomatik ekleyen kurum direk
+        public int InstitutionModelId { get; set; }
+        public InstitutionModel? InstitutionModel { get; set; } 
         public int UserModelId { get; set; } 
         public UserModel? UserModel { get; set; }
     }

@@ -22,7 +22,7 @@ namespace InvoiceApi.Models
         
         [StringLength(15)]
         
-        public string? Password { get; set; }   //Password kaydolmucak db ye
+        public string? Password { get; set; } 
 
         [Required]
         public int TC { get; set; }
@@ -31,12 +31,6 @@ namespace InvoiceApi.Models
         public byte[]? PasswordHash { get; set; }
         [JsonIgnore]
         public byte[]? PasswordSalt { get; set; }
-
-
-
-        //public int invoiceId { get; set; } //array olucak burası
-        //public InvoiceModel? InvoiceModel { get; set; }  //array olucak burası
-
 
     }
 }

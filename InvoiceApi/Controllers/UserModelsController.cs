@@ -25,7 +25,6 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/user
-        //MAYBE kurum görmek için
 
         [Authorize(Roles = "Institution")]
         [HttpGet]
@@ -39,7 +38,6 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/user/5
-        //MAYBE kurum görmek için
 
         [Authorize(Roles = "Institution")]
         [HttpGet("{id}")]
@@ -59,8 +57,6 @@ namespace InvoiceApi.Controllers
             return userModel;
         }
 
-        //USER
-        //GetMe
         // GET: api/user
         [Authorize(Roles = "User")]
         [HttpGet("me")]
@@ -81,24 +77,8 @@ namespace InvoiceApi.Controllers
 
             return userModel;
 
-            /*
-            if (_context.UserModels == null)
-            {
-                return NotFound();
-            }
-            var userModel = await _context.UserModels.FindAsync(id);
-
-            if (userModel == null)
-            {
-                return NotFound();
-            }
-
-            return userModel;*/
         }
 
-
-        //USER
-        //UpdateMe
         // PUT: api/user/me
         [Authorize(Roles = "User")]
         [HttpPut("me")]
@@ -134,45 +114,6 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
-        //Auth Register + Login
-        // POST: api/user
-       
-        /*
-        [HttpPost]
-        public async Task<ActionResult<UserModel>> PostUserModel(UserModel userModel)
-        {
-          if (_context.UserModels == null)
-          {
-              return Problem("Entity set 'DataContext.UserModels'  is null.");
-          }
-            _context.UserModels.Add(userModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUserModel", new { id = userModel.Id }, userModel);
-        }
-        */
-
-        //Bu olmucak
-        // DELETE: api/user/5
-        /*[HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserModel(int id)
-        {
-            if (_context.UserModels == null)
-            {
-                return NotFound();
-            }
-            var userModel = await _context.UserModels.FindAsync(id);
-            if (userModel == null)
-            {
-                return NotFound();
-            }
-
-            _context.UserModels.Remove(userModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-        */
         private bool UserModelExists(int id)
         {
             return (_context.UserModels?.Any(e => e.Id == id)).GetValueOrDefault();
