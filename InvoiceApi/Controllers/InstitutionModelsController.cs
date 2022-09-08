@@ -24,7 +24,7 @@ namespace InvoiceApi.Controllers
 
         //MAYBE User
         // GET: api/institution
-        [Authorize]
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InstitutionModel>>> GetInstitutionModels()
         {

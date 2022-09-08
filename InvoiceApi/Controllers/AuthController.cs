@@ -72,17 +72,19 @@ namespace InvoiceApi.Controllers
         [HttpPost("user/login")]
         public async Task<ActionResult<string>> UserLogin(UserDto request)
         {
-            if (userModel.Mail != request.Mail)
+            var dbUser = _context.UserModels.Where(u => u.Mail == request.Mail).FirstOrDefault();
+
+            if (dbUser == null)
             {
                 return BadRequest("User not Found");
             }
 
-            if(!VerifyPasswordHash(request.Password, userModel.PasswordHash, userModel.PasswordSalt))
+            if(!VerifyPasswordHash(request.Password, dbUser.PasswordHash, dbUser.PasswordSalt))
             {
                 return BadRequest("Wrong Password");
             }
 
-            string token = CreateUserToken(userModel);
+            string token = CreateUserToken(dbUser);
 
             return Ok(token);
         }
@@ -91,17 +93,18 @@ namespace InvoiceApi.Controllers
         [HttpPost("institution/login")]
         public async Task<ActionResult<string>> InstitutionLogin(InstitutionDto request) //dto
         {
-            if (institutionModel.Mail != request.Mail)
+            var dbinst = _context.InstitutionModels.Where(u => u.Mail == request.Mail).FirstOrDefault();
+            if (dbinst == null)
             {
                 return BadRequest("Institution not Found");
             }
 
-            if (!VerifyPasswordHash(request.Password, institutionModel.PasswordHash, institutionModel.PasswordSalt))  //ekle
+            if (!VerifyPasswordHash(request.Password, dbinst.PasswordHash, dbinst.PasswordSalt))
             {
                 return BadRequest("Wrong Password");
             }
 
-            string token = CreateInstitutionToken(institutionModel);
+            string token = CreateInstitutionToken(dbinst);
 
 
             return Ok(token);

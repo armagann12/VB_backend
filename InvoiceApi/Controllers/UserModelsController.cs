@@ -25,7 +25,7 @@ namespace InvoiceApi.Controllers
         // GET: api/user
         //MAYBE kurum görmek için
 
-        [Authorize]
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUserModels()
         {
