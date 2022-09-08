@@ -16,16 +16,18 @@ namespace InvoiceApi.Controllers
     public class UserModelsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public UserModelsController(DataContext context)
+        public UserModelsController(DataContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: api/user
         //MAYBE kurum görmek için
 
-       
+        [Authorize(Roles = "Institution")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUserModels()
         {
@@ -59,11 +61,27 @@ namespace InvoiceApi.Controllers
 
         //USER
         //GetMe
-        // GET: api/user/me/5
-        [Authorize]
-        [HttpGet("me/{id}")]
-        public async Task<ActionResult<UserModel>> GetMyUserModel(int id)
+        // GET: api/user
+        [Authorize(Roles = "User")]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserModel>> GetMyUserModel()
         {
+            var id = _userService.GetMyName();
+
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var userModel = await _context.UserModels.FindAsync(int.Parse(id));
+
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            return userModel;
+
+            /*
             if (_context.UserModels == null)
             {
                 return NotFound();
@@ -75,21 +93,25 @@ namespace InvoiceApi.Controllers
                 return NotFound();
             }
 
-            return userModel;
+            return userModel;*/
         }
 
 
         //USER
         //UpdateMe
-        // PUT: api/user/me/5
-        [Authorize]
-        [HttpPut("me/{id}")]
-        public async Task<IActionResult> PutUserModel(int id, UserModel userModel)
+        // PUT: api/user/me
+        [Authorize(Roles = "User")]
+        [HttpPut("me")]
+        public async Task<IActionResult> PutUserModel(UserModel userModel)
         {
-            if (id != userModel.Id)
+
+            var id = _userService.GetMyName();
+            if (id == null)
             {
                 return BadRequest();
             }
+
+            userModel.Id = int.Parse(id);
 
             _context.Entry(userModel).State = EntityState.Modified;
 
@@ -99,7 +121,7 @@ namespace InvoiceApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserModelExists(id))
+                if (!UserModelExists(int.Parse(id)))
                 {
                     return NotFound();
                 }

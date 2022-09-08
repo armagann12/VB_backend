@@ -16,17 +16,19 @@ namespace InvoiceApi.Controllers
     public class InvoiceModelsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public InvoiceModelsController(DataContext context)
+        public InvoiceModelsController(DataContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         //USER
         //getAllUsersInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpGet("user")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels()
         {
@@ -40,7 +42,7 @@ namespace InvoiceApi.Controllers
         //USER
         //getUserInvoice
         // GET: api/invoice/user/5
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpGet("user/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetUserInvoiceModel(int id)
         {
@@ -62,7 +64,7 @@ namespace InvoiceApi.Controllers
         //getAllInstitutionsInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpGet("institution")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels()
         {
@@ -76,7 +78,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //getInstitutionInvoices
         // GET: api/invoice/user/5
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpGet("institution/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetInstitutionInvoiceModel(int id)
         {
@@ -97,7 +99,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //UpdateMyInvoice
         // PUT: api/invoice/me/5
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpPut("me/{id}")]
         public async Task<IActionResult> PutInvoiceModel(int id, InvoiceModel invoiceModel)
         {
@@ -130,7 +132,7 @@ namespace InvoiceApi.Controllers
         //Otomatik kurum idsini girecek
         //KURUM
         // POST: api/invoice
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpPost]
         public async Task<ActionResult<InvoiceModel>> PostInvoiceModel(InvoiceModel invoiceModel)
         {
@@ -150,7 +152,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //DeleteMyInvoice
         // DELETE: api/invoice/me/5
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpDelete("me/{id}")]
         public async Task<IActionResult> DeleteInvoiceModel(int id)
         {
@@ -171,7 +173,7 @@ namespace InvoiceApi.Controllers
         }
 
         //PAY Invoice sadece status değişecek USER kullanıcak
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
         {

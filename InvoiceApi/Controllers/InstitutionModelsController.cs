@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using InvoiceApi.Services;
 
 namespace InvoiceApi.Controllers
 {
@@ -16,15 +17,17 @@ namespace InvoiceApi.Controllers
     public class InstitutionModelsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public InstitutionModelsController(DataContext context)
+        public InstitutionModelsController(DataContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         //MAYBE User
         // GET: api/institution
-        
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InstitutionModel>>> GetInstitutionModels()
         {
@@ -58,15 +61,17 @@ namespace InvoiceApi.Controllers
         //Institution
         //GetMe
         // GET: api/institution/me/5
-        [Authorize]
-        [HttpGet("me/{id}")]
-        public async Task<ActionResult<InstitutionModel>> GetMyInstitutionModel(int id)
+        [Authorize(Roles = "Institution")]
+        [HttpGet("me")]
+        public async Task<ActionResult<InstitutionModel>> GetMyInstitutionModel()
         {
-            if (_context.InstitutionModels == null)
+            var id = _userService.GetMyName();
+
+            if (id == null)
             {
                 return NotFound();
             }
-            var institutionModel = await _context.InstitutionModels.FindAsync(id);
+            var institutionModel = await _context.InstitutionModels.FindAsync(int.Parse(id));
 
             if (institutionModel == null)
             {
@@ -78,15 +83,19 @@ namespace InvoiceApi.Controllers
 
         //Institution
         //UpdateMe
-        // PUT: api/institution/5
-        [Authorize]
-        [HttpPut("me/{id}")]
-        public async Task<IActionResult> PutInstitutionModel(int id, InstitutionModel institutionModel)
+        // PUT: api/institution/me
+        [Authorize(Roles = "Institution")]
+        [HttpPut("me")]
+        public async Task<IActionResult> PutInstitutionModel(InstitutionModel institutionModel)
         {
-            if (id != institutionModel.Id)
+            var id = _userService.GetMyName();
+
+            if (id == null)
             {
                 return BadRequest();
             }
+
+            institutionModel.Id = int.Parse(id);
 
             _context.Entry(institutionModel).State = EntityState.Modified;
 
@@ -96,7 +105,7 @@ namespace InvoiceApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InstitutionModelExists(id))
+                if (!InstitutionModelExists(int.Parse(id)))
                 {
                     return NotFound();
                 }

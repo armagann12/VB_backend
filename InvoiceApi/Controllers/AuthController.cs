@@ -16,10 +16,13 @@ namespace InvoiceApi.Controllers
 
         private readonly DataContext _context;
         private readonly IConfiguration _configuration;
-        public AuthController(DataContext context, IConfiguration configuration)
+        private readonly IUserService _userService;
+
+        public AuthController(DataContext context, IConfiguration configuration, IUserService userService)
         {
             _context = context;
             _configuration = configuration;
+            _userService = userService;
         }
 
 
@@ -117,7 +120,8 @@ namespace InvoiceApi.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, institutionModel.Mail),
-                new Claim(ClaimTypes.Role, "Institution")
+                new Claim(ClaimTypes.Role, "Institution"),
+                new Claim("id", institutionModel.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -140,7 +144,8 @@ namespace InvoiceApi.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, userModel.Mail),
-                new Claim(ClaimTypes.Role, "User")
+                new Claim(ClaimTypes.Role, "User"),
+                new Claim("id", userModel.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
