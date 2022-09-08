@@ -108,7 +108,7 @@ namespace InvoiceApi.Controllers
 
         //Auth Register + Login
         // POST: api/institution
-        
+        /*
         [HttpPost]
         public async Task<ActionResult<InstitutionModel>> PostInstitutionModel(InstitutionModel institutionModel)
         {
@@ -121,7 +121,7 @@ namespace InvoiceApi.Controllers
 
             return CreatedAtAction("GetInstitutionModel", new { id = institutionModel.Id }, institutionModel);
         }
-
+        */
 
         //Bu olmucak
         // DELETE: api/institution/5

@@ -1,5 +1,6 @@
 ﻿using InvoiceApi.Data;
 using InvoiceApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,7 +25,7 @@ namespace InvoiceApi.Controllers
         public static UserModel userModel = new UserModel();
         public static InstitutionModel institutionModel = new InstitutionModel();
 
-
+        [AllowAnonymous]
         [HttpPost("user/register")]
         public async Task<ActionResult<UserModel>>RegisterUser(UserModel request)
         {
@@ -37,9 +38,11 @@ namespace InvoiceApi.Controllers
             userModel.PasswordHash = passwordHash;
             userModel.PasswordSalt = passwordSalt;
 
+            
             _context.UserModels.Add(userModel);
 
             await _context.SaveChangesAsync();
+            
 
             return Ok(userModel); 
         }
@@ -55,11 +58,11 @@ namespace InvoiceApi.Controllers
             institutionModel.PasswordHash = passwordHash;
             institutionModel.PasswordSalt = passwordSalt;
 
-            
+            /*
             _context.InstitutionModels.Add(institutionModel);
 
             await _context.SaveChangesAsync();
-
+            */
             
             return Ok(institutionModel);
         }
@@ -97,6 +100,7 @@ namespace InvoiceApi.Controllers
 
             string token = CreateInstitutionToken(institutionModel);
 
+
             return Ok(token);
         }
 
@@ -104,7 +108,7 @@ namespace InvoiceApi.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, institutionModel.Mail)
+                new Claim(ClaimTypes.Email, institutionModel.Mail)  
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

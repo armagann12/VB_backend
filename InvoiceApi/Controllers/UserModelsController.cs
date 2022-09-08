@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InvoiceApi.Controllers
 {
@@ -24,6 +25,7 @@ namespace InvoiceApi.Controllers
         // GET: api/user
         //MAYBE kurum görmek için
 
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUserModels()
         {
@@ -37,6 +39,7 @@ namespace InvoiceApi.Controllers
         // GET: api/user/5
         //MAYBE kurum görmek için
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserModel(int id)
         {

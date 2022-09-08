@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220907194529_InitialCreate")]
+    [Migration("20220908074602_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
