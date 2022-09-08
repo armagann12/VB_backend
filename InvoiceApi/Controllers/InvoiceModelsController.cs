@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace InvoiceApi.Controllers
 {
@@ -32,11 +33,18 @@ namespace InvoiceApi.Controllers
         [HttpGet("user")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels()
         {
+            var id = _userService.GetMyName();
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
           if (_context.InvoiceModels == null)
           {
               return NotFound();
           }
-            return await _context.InvoiceModels.ToListAsync();
+
+            return await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(id)).ToListAsync();
         }
 
         //USER
@@ -46,11 +54,17 @@ namespace InvoiceApi.Controllers
         [HttpGet("user/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetUserInvoiceModel(int id)
         {
-          if (_context.InvoiceModels == null)
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+
+            if (_context.InvoiceModels == null)
           {
               return NotFound();
           }
-            var invoiceModel = await _context.InvoiceModels.FindAsync(id);
+            var invoiceModel = await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
 
             if (invoiceModel == null)
             {
@@ -68,11 +82,16 @@ namespace InvoiceApi.Controllers
         [HttpGet("institution")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels()
         {
+            var id = _userService.GetMyName();
+            if (id == null)
+            {
+                return BadRequest();
+            }
             if (_context.InvoiceModels == null)
             {
                 return NotFound();
             }
-            return await _context.InvoiceModels.ToListAsync();
+            return await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(id)).ToListAsync();
         }
 
         //KURUM
@@ -82,11 +101,16 @@ namespace InvoiceApi.Controllers
         [HttpGet("institution/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetInstitutionInvoiceModel(int id)
         {
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
             if (_context.InvoiceModels == null)
             {
                 return NotFound();
             }
-            var invoiceModel = await _context.InvoiceModels.FindAsync(id);
+            var invoiceModel = await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
 
             if (invoiceModel == null)
             {
@@ -103,11 +127,21 @@ namespace InvoiceApi.Controllers
         [HttpPut("me/{id}")]
         public async Task<IActionResult> PutInvoiceModel(int id, InvoiceModel invoiceModel)
         {
-            if (id != invoiceModel.Id)
+            var uid = _userService.GetMyName();
+
+            if(uid == null)
             {
-                return BadRequest();
+                BadRequest();
             }
             
+            if (invoiceModel.InstitutionModelId != int.Parse(uid))
+            {
+                return NotFound();
+            }
+
+            invoiceModel.Id = id;
+            invoiceModel.InstitutionModelId = int.Parse(uid);
+            invoiceModel.Month = DateTime.Now.ToString("MM");
             _context.Entry(invoiceModel).State = EntityState.Modified;
 
             try
@@ -140,8 +174,12 @@ namespace InvoiceApi.Controllers
           {
               return Problem("Entity set 'DataContext.InvoiceModels'  is null.");
           }
+
+            var id = _userService.GetMyName();
+
             invoiceModel.Month = DateTime.Now.ToString("MM");
             invoiceModel.Status = false;
+            invoiceModel.InstitutionModelId = int.Parse(id);
 
             _context.InvoiceModels.Add(invoiceModel);
             await _context.SaveChangesAsync();
@@ -156,12 +194,22 @@ namespace InvoiceApi.Controllers
         [HttpDelete("me/{id}")]
         public async Task<IActionResult> DeleteInvoiceModel(int id)
         {
+            var uid = _userService.GetMyName();
+            if(uid == null)
+            {
+                BadRequest();
+            }
             if (_context.InvoiceModels == null)
             {
                 return NotFound();
             }
             var invoiceModel = await _context.InvoiceModels.FindAsync(id);
             if (invoiceModel == null)
+            {
+                return NotFound();
+            }
+
+            if(invoiceModel.InstitutionModelId != int.Parse(uid))
             {
                 return NotFound();
             }
@@ -173,10 +221,18 @@ namespace InvoiceApi.Controllers
         }
 
         //PAY Invoice sadece status değişecek USER kullanıcak
+
+        //kendi faturalarını ödeyebilecek sadece
         [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
         {
+            var uid = _userService.GetMyName();
+            if(uid == null)
+            {
+                return BadRequest();
+            }
+
             if (_context.InvoiceModels == null)
             {
                 return NotFound();
@@ -185,6 +241,11 @@ namespace InvoiceApi.Controllers
             
 
             if (invoiceModel == null)
+            {
+                return NotFound();
+            }
+
+            if(invoiceModel.UserModelId != int.Parse(uid))
             {
                 return NotFound();
             }
