@@ -18,5 +18,10 @@ namespace InvoiceApi.Services
             }
             return result;
         }
+
+        public object GetQuery()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

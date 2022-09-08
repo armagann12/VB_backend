@@ -29,12 +29,14 @@ namespace InvoiceApi.Controllers
         // GET: api/invoice/user
         [Authorize(Roles = "User")]
         [HttpGet("user")]
-        public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels()
+        public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels([FromQuery(Name = "status")] bool? status = null )
         {
+            
             var id = _userService.GetMyName();
+
             if(id == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
           if (_context.InvoiceModels == null)
@@ -42,7 +44,13 @@ namespace InvoiceApi.Controllers
               return NotFound();
           }
 
+          if(status == true || status == false)
+            {
+                return await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(id) && u.Status == status).ToListAsync();
+            }
+
             return await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(id)).ToListAsync();
+           
         }
 
         // GET: api/invoice/user/5
@@ -74,9 +82,10 @@ namespace InvoiceApi.Controllers
         // GET: api/invoice/user
         [Authorize(Roles = "Institution")]
         [HttpGet("institution")]
-        public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels()
+        public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels(bool? status = null)
         {
             var id = _userService.GetMyName();
+            
             if (id == null)
             {
                 return BadRequest();
@@ -84,6 +93,10 @@ namespace InvoiceApi.Controllers
             if (_context.InvoiceModels == null)
             {
                 return NotFound();
+            }
+            if(status == true || status == false)
+            {
+                return await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(id) && u.Status == status).ToListAsync();
             }
             return await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(id)).ToListAsync();
         }
