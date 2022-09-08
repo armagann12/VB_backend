@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InvoiceApi.Controllers
 {
@@ -20,11 +21,12 @@ namespace InvoiceApi.Controllers
         {
             _context = context;
         }
-        
+
         //USER
         //getAllUsersInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
+        [Authorize]
         [HttpGet("user")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels()
         {
@@ -38,6 +40,7 @@ namespace InvoiceApi.Controllers
         //USER
         //getUserInvoice
         // GET: api/invoice/user/5
+        [Authorize]
         [HttpGet("user/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetUserInvoiceModel(int id)
         {
@@ -59,6 +62,7 @@ namespace InvoiceApi.Controllers
         //getAllInstitutionsInvoices
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
+        [Authorize]
         [HttpGet("institution")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels()
         {
@@ -72,6 +76,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //getInstitutionInvoices
         // GET: api/invoice/user/5
+        [Authorize]
         [HttpGet("institution/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetInstitutionInvoiceModel(int id)
         {
@@ -92,7 +97,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //UpdateMyInvoice
         // PUT: api/invoice/me/5
-
+        [Authorize]
         [HttpPut("me/{id}")]
         public async Task<IActionResult> PutInvoiceModel(int id, InvoiceModel invoiceModel)
         {
@@ -125,7 +130,7 @@ namespace InvoiceApi.Controllers
         //Otomatik kurum idsini girecek
         //KURUM
         // POST: api/invoice
-        
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<InvoiceModel>> PostInvoiceModel(InvoiceModel invoiceModel)
         {
@@ -145,6 +150,7 @@ namespace InvoiceApi.Controllers
         //KURUM
         //DeleteMyInvoice
         // DELETE: api/invoice/me/5
+        [Authorize]
         [HttpDelete("me/{id}")]
         public async Task<IActionResult> DeleteInvoiceModel(int id)
         {
@@ -165,7 +171,7 @@ namespace InvoiceApi.Controllers
         }
 
         //PAY Invoice sadece status değişecek USER kullanıcak
-
+        [Authorize]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
         {

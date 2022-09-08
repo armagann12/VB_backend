@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InvoiceApi.Controllers
 {
@@ -23,7 +24,7 @@ namespace InvoiceApi.Controllers
 
         //MAYBE User
         // GET: api/institution
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InstitutionModel>>> GetInstitutionModels()
         {
@@ -36,6 +37,7 @@ namespace InvoiceApi.Controllers
 
         //MAYBE User
         // GET: api/institution/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<InstitutionModel>> GetInstitutionModel(int id)
         {
@@ -56,6 +58,7 @@ namespace InvoiceApi.Controllers
         //Institution
         //GetMe
         // GET: api/institution/me/5
+        [Authorize]
         [HttpGet("me/{id}")]
         public async Task<ActionResult<InstitutionModel>> GetMyInstitutionModel(int id)
         {
@@ -76,7 +79,7 @@ namespace InvoiceApi.Controllers
         //Institution
         //UpdateMe
         // PUT: api/institution/5
-
+        [Authorize]
         [HttpPut("me/{id}")]
         public async Task<IActionResult> PutInstitutionModel(int id, InstitutionModel institutionModel)
         {

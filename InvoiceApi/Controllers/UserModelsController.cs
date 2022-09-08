@@ -25,7 +25,7 @@ namespace InvoiceApi.Controllers
         // GET: api/user
         //MAYBE kurum görmek için
 
-        
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUserModels()
         {
@@ -60,7 +60,7 @@ namespace InvoiceApi.Controllers
         //USER
         //GetMe
         // GET: api/user/me/5
-
+        [Authorize]
         [HttpGet("me/{id}")]
         public async Task<ActionResult<UserModel>> GetMyUserModel(int id)
         {
@@ -82,7 +82,7 @@ namespace InvoiceApi.Controllers
         //USER
         //UpdateMe
         // PUT: api/user/me/5
-        
+        [Authorize]
         [HttpPut("me/{id}")]
         public async Task<IActionResult> PutUserModel(int id, UserModel userModel)
         {

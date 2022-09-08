@@ -47,6 +47,7 @@ namespace InvoiceApi.Controllers
             return Ok(userModel); 
         }
 
+        [AllowAnonymous]
         [HttpPost("institution/register")]
         public async Task<ActionResult<InstitutionModel>>RegisterInstitution(InstitutionModel request)
         {
@@ -58,15 +59,16 @@ namespace InvoiceApi.Controllers
             institutionModel.PasswordHash = passwordHash;
             institutionModel.PasswordSalt = passwordSalt;
 
-            /*
+            
             _context.InstitutionModels.Add(institutionModel);
 
             await _context.SaveChangesAsync();
-            */
+            
             
             return Ok(institutionModel);
         }
 
+        [AllowAnonymous]
         [HttpPost("user/login")]
         public async Task<ActionResult<string>> UserLogin(UserDto request)
         {
@@ -85,6 +87,7 @@ namespace InvoiceApi.Controllers
             return Ok(token);
         }
 
+        [AllowAnonymous]
         [HttpPost("institution/login")]
         public async Task<ActionResult<string>> InstitutionLogin(InstitutionDto request) //dto
         {
