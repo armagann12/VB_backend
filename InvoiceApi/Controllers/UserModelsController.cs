@@ -39,7 +39,7 @@ namespace InvoiceApi.Controllers
         // GET: api/user/5
         //MAYBE kurum görmek için
 
-        [Authorize]
+        [Authorize(Roles = "Institution")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserModel(int id)
         {

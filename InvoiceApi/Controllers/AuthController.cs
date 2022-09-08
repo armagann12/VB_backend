@@ -116,7 +116,8 @@ namespace InvoiceApi.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, institutionModel.Mail)  
+                new Claim(ClaimTypes.Email, institutionModel.Mail),
+                new Claim(ClaimTypes.Role, "Institution")
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -138,7 +139,8 @@ namespace InvoiceApi.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, userModel.Mail)
+                new Claim(ClaimTypes.Email, userModel.Mail),
+                new Claim(ClaimTypes.Role, "User")
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
