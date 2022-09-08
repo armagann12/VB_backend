@@ -22,14 +22,14 @@ namespace InvoiceApi.Controllers
             _configuration = configuration;
         }
 
-        public static UserModel userModel = new UserModel();
-        public static InstitutionModel institutionModel = new InstitutionModel();
 
         [AllowAnonymous]
         [HttpPost("user/register")]
         public async Task<ActionResult<UserModel>>RegisterUser(UserModel request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            UserModel userModel = new UserModel();
 
             userModel.FirstName = request.FirstName;
             userModel.LastName = request.LastName;
@@ -53,13 +53,15 @@ namespace InvoiceApi.Controllers
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+            InstitutionModel institutionModel = new InstitutionModel();
+            
             institutionModel.Name = request.Name;
             institutionModel.Detail = request.Detail;
             institutionModel.Mail = request.Mail;
             institutionModel.PasswordHash = passwordHash;
             institutionModel.PasswordSalt = passwordSalt;
-
             
+
             _context.InstitutionModels.Add(institutionModel);
 
             await _context.SaveChangesAsync();
