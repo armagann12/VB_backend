@@ -134,18 +134,29 @@ namespace InvoiceApi.Controllers
 
             if(uid == null)
             {
-                BadRequest();
+                return BadRequest();
             }
-            
+
+            /*
             if (invoiceModel.InstitutionModelId != int.Parse(uid))
             {
                 return NotFound();
             }
+            */
 
-            invoiceModel.Id = id;
-            invoiceModel.InstitutionModelId = int.Parse(uid);
-            invoiceModel.Month = DateTime.Now.ToString("MM");
-            _context.Entry(invoiceModel).State = EntityState.Modified;
+            var myInvoice = await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
+
+            if (myInvoice == null)
+            {
+                return NotFound();
+            }
+
+
+            myInvoice.Name = invoiceModel.Name;
+            myInvoice.Detail = invoiceModel.Detail;
+            myInvoice.Price = invoiceModel.Price;
+            
+            _context.Entry(myInvoice).State = EntityState.Modified;
 
             try
             {
@@ -219,6 +230,7 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
+        // Get: api/pay/id
         [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
