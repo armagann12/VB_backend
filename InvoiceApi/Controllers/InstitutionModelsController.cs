@@ -89,9 +89,17 @@ namespace InvoiceApi.Controllers
                 return BadRequest();
             }
 
-            institutionModel.Id = int.Parse(id);
+            var myInstitution = await _context.InstitutionModels.Where(u => u.Id == int.Parse(id)).FirstOrDefaultAsync();
 
-            _context.Entry(institutionModel).State = EntityState.Modified;
+            if (myInstitution == null)
+            {
+                return NotFound();
+            }
+
+            myInstitution.Id = int.Parse(id);
+            myInstitution.Name = institutionModel.Name;
+            myInstitution.Detail = institutionModel.Detail;
+            myInstitution.Mail = institutionModel.Mail;
 
             try
             {
