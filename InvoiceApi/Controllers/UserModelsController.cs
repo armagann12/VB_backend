@@ -91,9 +91,19 @@ namespace InvoiceApi.Controllers
                 return BadRequest();
             }
 
-            userModel.Id = int.Parse(id);
+            var myUser = await _context.UserModels.Where(u => u.Id == int.Parse(id)).FirstOrDefaultAsync();
 
-            _context.Entry(userModel).State = EntityState.Modified;
+            if(myUser == null)
+            {
+                return NotFound();
+            }
+
+            myUser.Id = int.Parse(id);
+            myUser.FirstName = userModel.FirstName;
+            myUser.LastName = userModel.LastName;
+            myUser.Mail = userModel.Mail;
+            myUser.TC = userModel.TC;
+
 
             try
             {
