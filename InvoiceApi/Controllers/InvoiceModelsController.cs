@@ -9,6 +9,7 @@ using InvoiceApi.Data;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
+using InvoiceApi.RabbitMQ;
 
 namespace InvoiceApi.Controllers
 {
@@ -18,11 +19,13 @@ namespace InvoiceApi.Controllers
     {
         private readonly DataContext _context;
         private readonly IUserService _userService;
+        private readonly IRabitMQProducer _rabitMQProducer;
 
-        public InvoiceModelsController(DataContext context, IUserService userService)
+        public InvoiceModelsController(DataContext context, IUserService userService , IRabitMQProducer rabitMQProducer)
         {
             _context = context;
             _userService = userService;
+            _rabitMQProducer = rabitMQProducer;
         }
 
         //  +param olarak filterlama al status true false
@@ -240,6 +243,10 @@ namespace InvoiceApi.Controllers
         public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
         {
             var uid = _userService.GetMyName();
+
+            _rabitMQProducer.SendProductMessage(id);
+
+            //
             if(uid == null)
             {
                 return BadRequest();
