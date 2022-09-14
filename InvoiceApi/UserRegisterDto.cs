@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace InvoiceApi
 {
@@ -19,6 +20,7 @@ namespace InvoiceApi
         [Required]
         public string Password { get; set; } = String.Empty;
 
+        [Range(10000000000, 99999999999)]
         [Required]
         public long TC { get; set; }
     }

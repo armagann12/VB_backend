@@ -22,6 +22,7 @@ namespace InvoiceApi.Models
         [EmailAddress]
         public string? Mail { get; set; }
 
+        [Range(10000000000, 99999999999)]
         [Required]
         public long TC { get; set; }
 
