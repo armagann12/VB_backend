@@ -189,6 +189,10 @@ namespace InvoiceApi.Controllers
 
             var id = _userService.GetMyName();
 
+            Random generator = new Random();
+            int r = generator.Next(100000, 1000000);
+
+            invoiceModel.InvoiceNumber = r;
             invoiceModel.Month = DateTime.Now.ToString("MM");
             invoiceModel.Status = false;
             invoiceModel.InstitutionModelId = int.Parse(id);

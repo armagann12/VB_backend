@@ -7,11 +7,13 @@ namespace InvoiceApi.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(30)]
         public string? Name { get; set; }
+
+        public int InvoiceNumber { get; set; }
         
         [Required]
-        [Range(0, 100.000)]
+        [Range(0, 9999.000)]
         public int Price { get; set; }
 
         [Required]
