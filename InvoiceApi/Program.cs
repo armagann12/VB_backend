@@ -69,6 +69,7 @@ builder.Services.AddCors(options =>
 
 //BURASI DENEMEDIR
 
+/*
 var factory = new ConnectionFactory
 {
     HostName = "localhost"
@@ -89,7 +90,7 @@ consumer.Received += (model, eventArgs) => {
 
 channel.BasicConsume(queue: "pay", autoAck: true, consumer: consumer);
 Console.ReadKey();
-
+*/
 
 //BURASI DENEMEDIR
 
