@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace InvoiceApi.Models
 {
+    [Index(nameof(Mail), IsUnique = true)]
     public class InstitutionModel
     {
         public int Id { get; set; }
@@ -18,10 +20,6 @@ namespace InvoiceApi.Models
         [Required]
         [EmailAddress]
         public string? Mail { get; set; }
-
-        
-        [StringLength(15)]
-        public string? Password { get; set; } 
 
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }

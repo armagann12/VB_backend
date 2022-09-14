@@ -17,8 +17,7 @@ namespace InvoiceApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Mail = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
@@ -35,9 +34,8 @@ namespace InvoiceApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
-                    TC = table.Column<int>(type: "int", nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TC = table.Column<long>(type: "bigint", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
@@ -78,6 +76,12 @@ namespace InvoiceApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_InstitutionModels_Mail",
+                table: "InstitutionModels",
+                column: "Mail",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvoiceModels_InstitutionModelId",
                 table: "InvoiceModels",
                 column: "InstitutionModelId");
@@ -86,6 +90,12 @@ namespace InvoiceApi.Migrations
                 name: "IX_InvoiceModels_UserModelId",
                 table: "InvoiceModels",
                 column: "UserModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserModels_Mail",
+                table: "UserModels",
+                column: "Mail",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220908074602_InitialCreate")]
+    [Migration("20220914084407_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,16 +39,12 @@ namespace InvoiceApi.Migrations
 
                     b.Property<string>("Mail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
@@ -57,6 +53,9 @@ namespace InvoiceApi.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Mail")
+                        .IsUnique();
 
                     b.ToTable("InstitutionModels");
                 });
@@ -123,11 +122,7 @@ namespace InvoiceApi.Migrations
 
                     b.Property<string>("Mail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
@@ -135,10 +130,13 @@ namespace InvoiceApi.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("TC")
-                        .HasColumnType("int");
+                    b.Property<long>("TC")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Mail")
+                        .IsUnique();
 
                     b.ToTable("UserModels");
                 });

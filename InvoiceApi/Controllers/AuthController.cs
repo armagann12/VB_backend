@@ -28,7 +28,7 @@ namespace InvoiceApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("user/register")]
-        public async Task<ActionResult<UserModel>>RegisterUser(UserModel request)
+        public async Task<ActionResult<UserModel>>RegisterUser(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -40,7 +40,6 @@ namespace InvoiceApi.Controllers
             userModel.Mail = request.Mail;
             userModel.PasswordHash = passwordHash;
             userModel.PasswordSalt = passwordSalt;
-
             
             _context.UserModels.Add(userModel);
 
@@ -52,7 +51,7 @@ namespace InvoiceApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("institution/register")]
-        public async Task<ActionResult<InstitutionModel>>RegisterInstitution(InstitutionModel request)
+        public async Task<ActionResult<InstitutionModel>>RegisterInstitution(InstitutionRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 

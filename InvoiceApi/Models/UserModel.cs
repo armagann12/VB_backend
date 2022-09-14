@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 using System.Text.Json.Serialization;
 
 namespace InvoiceApi.Models
 {
+    [Index(nameof(Mail), IsUnique = true)]
     public class UserModel
     {
         public int Id { get; set; }
@@ -19,13 +22,8 @@ namespace InvoiceApi.Models
         [EmailAddress]
         public string? Mail { get; set; }
 
-        
-        [StringLength(15)]
-        
-        public string? Password { get; set; } 
-
         [Required]
-        public int TC { get; set; }
+        public long TC { get; set; }
 
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }
