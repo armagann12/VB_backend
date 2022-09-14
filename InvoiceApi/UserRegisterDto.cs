@@ -20,6 +20,6 @@ namespace InvoiceApi
         public string Password { get; set; } = String.Empty;
 
         [Required]
-        public int TC { get; set; }
+        public long TC { get; set; }
     }
 }
