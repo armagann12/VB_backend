@@ -17,13 +17,15 @@ namespace InvoiceApi.RabbitMQ
 
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare("pay", exclusive: false);
+            channel.QueueDeclare("pay", exclusive: false, autoDelete: false, durable: false);
 
             var json = JsonConvert.SerializeObject(message);
 
             var body = Encoding.UTF8.GetBytes(json);
 
             channel.BasicPublish(exchange: "", routingKey: "pay", body: body);
+
+            Console.WriteLine("Message Send");
         }
     }
 }
