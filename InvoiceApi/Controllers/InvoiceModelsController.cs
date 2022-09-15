@@ -20,12 +20,14 @@ namespace InvoiceApi.Controllers
         private readonly DataContext _context;
         private readonly IUserService _userService;
         private readonly IRabitMQProducer _rabitMQProducer;
+        private readonly IRabbitMQConsumer _rabbitMQConsumer;
 
-        public InvoiceModelsController(DataContext context, IUserService userService , IRabitMQProducer rabitMQProducer)
+        public InvoiceModelsController(DataContext context, IUserService userService , IRabitMQProducer rabitMQProducer, IRabbitMQConsumer rabbitMQConsumer)
         {
             _context = context;
             _userService = userService;
             _rabitMQProducer = rabitMQProducer;
+            _rabbitMQConsumer = rabbitMQConsumer;
         }
 
         //  +param olarak filterlama al status true false
@@ -240,56 +242,21 @@ namespace InvoiceApi.Controllers
         // Get: api/pay/id
         [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
-        public async Task<ActionResult<InvoiceModel>> PayInvoiceModel(int id)
+        public async Task<ActionResult<bool>> PayInvoiceModel(int id)
         {
             var uid = _userService.GetMyName();
 
-            _rabitMQProducer.SendProductMessage(id);
-
-            //
             if(uid == null)
             {
                 return BadRequest();
             }
 
-            if (_context.InvoiceModels == null)
-            {
-                return NotFound();
-            }
-            var invoiceModel = await _context.InvoiceModels.FindAsync(id);
-            
+            _rabitMQProducer.SendProductMessage(id);
 
-            if (invoiceModel == null)
-            {
-                return NotFound();
-            }
+            _rabbitMQConsumer.RecieveProductMessage();
 
-            if(invoiceModel.UserModelId != int.Parse(uid))
-            {
-                return NotFound();
-            }
+            return true;
 
-            invoiceModel.Status = true;
-
-            _context.Entry(invoiceModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InvoiceModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return invoiceModel;
         }
 
 
