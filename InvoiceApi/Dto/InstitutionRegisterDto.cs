@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace InvoiceApi
+namespace InvoiceApi.Dto
 {
     public class InstitutionRegisterDto
     {
@@ -14,9 +14,9 @@ namespace InvoiceApi
 
         [Required]
         [EmailAddress]
-        public string Mail { get; set; } = String.Empty;
+        public string Mail { get; set; } = string.Empty;
 
         [Required]
-        public string Password { get; set; } = String.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

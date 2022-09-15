@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 
-namespace InvoiceApi
+namespace InvoiceApi.Dto
 {
     public class UserRegisterDto
     {
@@ -15,10 +15,10 @@ namespace InvoiceApi
 
         [Required]
         [EmailAddress]
-        public string Mail { get; set; } = String.Empty;
+        public string Mail { get; set; } = string.Empty;
 
         [Required]
-        public string Password { get; set; } = String.Empty;
+        public string Password { get; set; } = string.Empty;
 
         [Range(10000000000, 99999999999)]
         [Required]

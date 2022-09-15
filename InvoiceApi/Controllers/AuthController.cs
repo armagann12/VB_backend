@@ -1,4 +1,5 @@
 ﻿using InvoiceApi.Data;
+using InvoiceApi.Dto;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
