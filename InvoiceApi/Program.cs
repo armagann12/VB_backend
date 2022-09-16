@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 using System.Text;
 
 var myAllowSpesificOrigins = "_myAllowSpesificOrigins";
@@ -15,6 +16,13 @@ var myAllowSpesificOrigins = "_myAllowSpesificOrigins";
 Console.WriteLine("API Started");
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 
