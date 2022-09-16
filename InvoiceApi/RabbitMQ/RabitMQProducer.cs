@@ -17,7 +17,7 @@ namespace InvoiceApi.RabbitMQ
 
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare("pay", exclusive: false, autoDelete: false, durable: false);
+            channel.QueueDeclare("payQueue", exclusive: false, autoDelete: false, durable: true);
 
             var json = JsonConvert.SerializeObject(message);
 
@@ -25,7 +25,7 @@ namespace InvoiceApi.RabbitMQ
 
             channel.BasicPublish(exchange: "", routingKey: "pay", body: body);
 
-            Console.WriteLine("Message Send");
+            Console.WriteLine($" Message send: {message}");
         }
     }
 }

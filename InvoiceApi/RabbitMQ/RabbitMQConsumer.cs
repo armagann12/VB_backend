@@ -28,17 +28,17 @@ namespace InvoiceApi.RabbitMQ
 
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare("pay", exclusive: false, durable: false, autoDelete: false);
+            channel.QueueDeclare("payQueue", exclusive: false, durable: true, autoDelete: false);
 
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += async (model, eventArgs) =>
+            consumer.Received += (model, eventArgs) =>
             {
 
                 var body = eventArgs.Body.ToArray();
                 message = Encoding.UTF8.GetString(body);
                 Console.WriteLine($" Message received: {message}");
 
-                Thread.Sleep(7000);
+                //Thread.Sleep(7000);
 
 
                 //uid controlü eksik
@@ -47,7 +47,7 @@ namespace InvoiceApi.RabbitMQ
                 {
                     Console.WriteLine("error");
                 }
-                var invoiceModel = await _context.InvoiceModels.FindAsync(int.Parse(message));
+                var invoiceModel = _context.InvoiceModels.Find(int.Parse(message));
 
                 if (invoiceModel == null)
                 {
@@ -58,11 +58,10 @@ namespace InvoiceApi.RabbitMQ
 
                 _context.Entry(invoiceModel).State = EntityState.Modified;
 
-                Console.WriteLine("PAYED");
-
                 try
                 {
-                    await _context.SaveChangesAsync();
+                     _context.SaveChanges();
+                    Console.WriteLine($" PAYED {message}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
