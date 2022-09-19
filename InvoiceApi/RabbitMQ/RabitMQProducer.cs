@@ -23,7 +23,7 @@ namespace InvoiceApi.RabbitMQ
 
             var body = Encoding.UTF8.GetBytes(json);
 
-            channel.BasicPublish(exchange: "", routingKey: "pay", body: body);
+            channel.BasicPublish(exchange: "", routingKey: "payQueue", body: body);
 
             Console.WriteLine($" Message send: {message}");
         }

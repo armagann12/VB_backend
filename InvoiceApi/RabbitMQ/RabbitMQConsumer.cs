@@ -17,7 +17,7 @@ namespace InvoiceApi.RabbitMQ
         }
         public void RecieveProductMessage()
         {
-
+            Console.WriteLine("Hey");
 
             var factory = new ConnectionFactory
             {
@@ -31,15 +31,14 @@ namespace InvoiceApi.RabbitMQ
             channel.QueueDeclare("payQueue", exclusive: false, durable: true, autoDelete: false);
 
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, eventArgs) =>
-            {
 
+            Console.WriteLine("Hey");
+            consumer.Received += async (model, eventArgs) =>
+            {
+                Console.WriteLine("Hey");
                 var body = eventArgs.Body.ToArray();
                 message = Encoding.UTF8.GetString(body);
                 Console.WriteLine($" Message received: {message}");
-
-                //Thread.Sleep(7000);
-
 
                 //uid controlü eksik
 
@@ -47,7 +46,7 @@ namespace InvoiceApi.RabbitMQ
                 {
                     Console.WriteLine("error");
                 }
-                var invoiceModel = _context.InvoiceModels.Find(int.Parse(message));
+                var invoiceModel = await _context.InvoiceModels.FindAsync(int.Parse(message));
 
                 if (invoiceModel == null)
                 {
@@ -60,7 +59,7 @@ namespace InvoiceApi.RabbitMQ
 
                 try
                 {
-                     _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     Console.WriteLine($" PAYED {message}");
                 }
                 catch (DbUpdateConcurrencyException)
@@ -77,7 +76,7 @@ namespace InvoiceApi.RabbitMQ
 
             };
 
-            channel.BasicConsume(queue: "pay", autoAck: true, consumer: consumer);
+            channel.BasicConsume(queue: "payQueue", autoAck: true, consumer: consumer);
             Console.ReadKey();
 
         }

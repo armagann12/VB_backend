@@ -79,8 +79,21 @@ builder.Services.AddCors(options =>
         });
 });
 
+/*
+
+var serviceProvider = builder.Services.BuildServiceProvider().CreateScope().ServiceProvider;
+
+var _provider = serviceProvider.GetRequiredService<IRabbitMQConsumer>();
+
+_provider.RecieveProductMessage();
+
+*/
 
 var app = builder.Build();
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -96,9 +109,19 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
-  
 
 app.MapControllers();
 
 app.Run();
+
+
+
+
+
+/*
+var someService = app.Services.GetRequiredService<IRabbitMQConsumer>();
+
+someService.RecieveProductMessage();
+*/
+
 
