@@ -45,6 +45,31 @@ namespace InvoiceApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CreditCardModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<long>(type: "bigint", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CVC = table.Column<int>(type: "int", nullable: false),
+                    ValidDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Balance = table.Column<long>(type: "bigint", nullable: false),
+                    UserModelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditCardModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditCardModels_UserModels_UserModelId",
+                        column: x => x.UserModelId,
+                        principalTable: "UserModels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvoiceModels",
                 columns: table => new
                 {
@@ -77,6 +102,11 @@ namespace InvoiceApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CreditCardModels_UserModelId",
+                table: "CreditCardModels",
+                column: "UserModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InstitutionModels_Mail",
                 table: "InstitutionModels",
                 column: "Mail",
@@ -101,6 +131,9 @@ namespace InvoiceApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CreditCardModels");
+
             migrationBuilder.DropTable(
                 name: "InvoiceModels");
 

@@ -35,8 +35,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IRabitMQProducer, RabitMQProducer>();
 
-builder.Services.AddScoped<IRabbitMQConsumer, RabbitMQConsumer>();
-
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSwaggerGen(options =>

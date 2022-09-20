@@ -22,6 +22,42 @@ namespace InvoiceApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("InvoiceApi.Models.CreditCardModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<long>("Balance")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("BankName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CVC")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Number")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserModelId");
+
+                    b.ToTable("CreditCardModels");
+                });
+
             modelBuilder.Entity("InvoiceApi.Models.InstitutionModel", b =>
                 {
                     b.Property<int>("Id")
@@ -140,6 +176,17 @@ namespace InvoiceApi.Migrations
                         .IsUnique();
 
                     b.ToTable("UserModels");
+                });
+
+            modelBuilder.Entity("InvoiceApi.Models.CreditCardModel", b =>
+                {
+                    b.HasOne("InvoiceApi.Models.UserModel", "UserModel")
+                        .WithMany()
+                        .HasForeignKey("UserModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("InvoiceApi.Models.InvoiceModel", b =>
