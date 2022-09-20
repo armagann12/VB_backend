@@ -20,14 +20,12 @@ namespace InvoiceApi.Controllers
         private readonly DataContext _context;
         private readonly IUserService _userService;
         private readonly IRabitMQProducer _rabitMQProducer;
-        private readonly IRabbitMQConsumer _rabbitMQConsumer;
 
-        public InvoiceModelsController(DataContext context, IUserService userService , IRabitMQProducer rabitMQProducer, IRabbitMQConsumer rabbitMQConsumer)
+        public InvoiceModelsController(DataContext context, IUserService userService , IRabitMQProducer rabitMQProducer)
         {
             _context = context;
             _userService = userService;
             _rabitMQProducer = rabitMQProducer;
-            _rabbitMQConsumer = rabbitMQConsumer;
         }
 
         //  +param olarak filterlama al status true false
@@ -216,7 +214,7 @@ namespace InvoiceApi.Controllers
             var uid = _userService.GetMyName();
             if(uid == null)
             {
-                BadRequest();
+                return BadRequest();
             }
             if (_context.InvoiceModels == null)
             {
