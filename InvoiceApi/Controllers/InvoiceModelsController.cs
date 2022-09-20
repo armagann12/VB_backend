@@ -253,8 +253,6 @@ namespace InvoiceApi.Controllers
 
             _rabitMQProducer.SendProductMessage(id);
             
-            //_rabbitMQConsumer.RecieveProductMessage();
-
             return true;
 
         }
