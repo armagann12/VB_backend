@@ -124,6 +124,184 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "User")]
+        [HttpPost("card")]
+        public async Task<ActionResult<CreditCardModel>> PostCreditCardModel(CreditCardModel creditCardModel)
+        {
+            if (_context.CreditCardModels == null)
+            {
+                return Problem("Entity set 'DataContext.CreditCardModels'  is null.");
+            }
+
+            var id = _userService.GetMyName();
+
+            var userModel = await _context.UserModels.FindAsync(int.Parse(id));
+
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+            //BankName bodyden gelcek
+
+            var myName = userModel.FirstName + " " + userModel.LastName;
+
+            creditCardModel.Balance = 0;
+            creditCardModel.UserModelId = int.Parse(id);
+            creditCardModel.UserName = myName;
+
+            Random generator = new Random();
+            int r = generator.Next(100, 1000);
+            long x = generator.NextInt64(1000000000000000, 10000000000000000);
+
+            creditCardModel.CVC = r;
+            creditCardModel.Number = x;
+
+            var year = int.Parse(DateTime.Now.ToString("yy")) + 10;
+            var strYear = year.ToString();
+            var strMonth = DateTime.Now.ToString("MM");
+
+            creditCardModel.ValidDate = strMonth + "/" + strYear;
+
+            _context.CreditCardModels.Add(creditCardModel);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("PostCreditCardModel", new { id = creditCardModel.Id }, creditCardModel);
+
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me")]
+        public async Task<ActionResult<IEnumerable<CreditCardModel>>> GetUsersCreditCardModels()
+        {
+            var id = _userService.GetMyName();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(id)).ToListAsync();
+
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me/{id}")]
+        public async Task<ActionResult<CreditCardModel>> GetUserCreditCardModel(int id)
+        {
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
+
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            return creditCardModel;
+            
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete("card/me/{id}")]
+        public async Task<IActionResult> DeleteCreditCardModel(int id)
+        {
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.FindAsync(id);
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            if (creditCardModel.UserModelId != int.Parse(uid))
+            {
+                return NotFound();
+            }
+
+            _context.CreditCardModels.Remove(creditCardModel);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me/money/{id}/{money}")]
+        public async Task<ActionResult<bool>> uploadCreditCardModel(int id, int money)
+        {
+            var uid = _userService.GetMyName();
+
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
+
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            creditCardModel.Balance = creditCardModel.Balance + money;
+
+            _context.Entry(creditCardModel).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CreditCardModelExists(id))
+                {
+                    Console.WriteLine("Error");
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+        }
+
+
+        private bool CreditCardModelExists(int id)
+        {
+            return (_context.CreditCardModels?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
         private bool UserModelExists(int id)
         {
             return (_context.UserModels?.Any(e => e.Id == id)).GetValueOrDefault();

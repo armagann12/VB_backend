@@ -68,9 +68,9 @@ namespace InvoiceApi.Controllers
             }
 
             if (_context.InvoiceModels == null)
-          {
-              return NotFound();
-          }
+            {
+                return NotFound();
+            }
             var invoiceModel = await _context.InvoiceModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
 
             if (invoiceModel == null)
