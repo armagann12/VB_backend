@@ -169,6 +169,56 @@ namespace InvoiceApi.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me")]
+        public async Task<ActionResult<IEnumerable<CreditCardModel>>> GetUsersCreditCardModels()
+        {
+            var id = _userService.GetMyName();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(id)).ToListAsync();
+
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me/{id}")]
+        public async Task<ActionResult<CreditCardModel>> GetUserCreditCardModel(int id)
+        {
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
+
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            return creditCardModel;
+            
+        }
+
+
+
+
+
         private bool UserModelExists(int id)
         {
             return (_context.UserModels?.Any(e => e.Id == id)).GetValueOrDefault();
