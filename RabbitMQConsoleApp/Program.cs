@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
 
-optionsBuilder.UseSqlServer("server=localhost\\sqlexpress;database=invoiceapidb;trusted_connection=true");
+optionsBuilder.UseSqlServer("server=localhost\\sqlexpress;database=invoiceapidb2;trusted_connection=true");
 
 
 var factory = new ConnectionFactory
