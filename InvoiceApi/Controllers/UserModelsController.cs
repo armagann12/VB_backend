@@ -215,8 +215,91 @@ namespace InvoiceApi.Controllers
             
         }
 
+        [Authorize(Roles = "User")]
+        [HttpDelete("card/me/{id}")]
+        public async Task<IActionResult> DeleteCreditCardModel(int id)
+        {
+            var uid = _userService.GetMyName();
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.FindAsync(id);
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            if (creditCardModel.UserModelId != int.Parse(uid))
+            {
+                return NotFound();
+            }
+
+            _context.CreditCardModels.Remove(creditCardModel);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("card/me/money/{id}/{money}")]
+        public async Task<ActionResult<bool>> uploadCreditCardModel(int id, int money)
+        {
+            var uid = _userService.GetMyName();
+
+            if (uid == null)
+            {
+                return BadRequest();
+            }
+
+            if (_context.CreditCardModels == null)
+            {
+                return NotFound();
+            }
+
+            var creditCardModel = await _context.CreditCardModels.Where(u => u.UserModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
+
+            if (creditCardModel == null)
+            {
+                return NotFound();
+            }
+
+            creditCardModel.Balance = creditCardModel.Balance + money;
+
+            _context.Entry(creditCardModel).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CreditCardModelExists(id))
+                {
+                    Console.WriteLine("Error");
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+        }
 
 
+        private bool CreditCardModelExists(int id)
+        {
+            return (_context.CreditCardModels?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
 
 
         private bool UserModelExists(int id)
