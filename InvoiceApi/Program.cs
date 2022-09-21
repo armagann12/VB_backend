@@ -77,15 +77,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-/*
-
-var serviceProvider = builder.Services.BuildServiceProvider().CreateScope().ServiceProvider;
-
-var _provider = serviceProvider.GetRequiredService<IRabbitMQConsumer>();
-
-_provider.RecieveProductMessage();
-
-*/
 
 var app = builder.Build();
 
@@ -111,15 +102,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-
-
-
-/*
-var someService = app.Services.GetRequiredService<IRabbitMQConsumer>();
-
-someService.RecieveProductMessage();
-*/
 
 

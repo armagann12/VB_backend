@@ -124,6 +124,51 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "User")]
+        [HttpPost("card")]
+        public async Task<ActionResult<CreditCardModel>> PostCreditCardModel(CreditCardModel creditCardModel)
+        {
+            if (_context.CreditCardModels == null)
+            {
+                return Problem("Entity set 'DataContext.CreditCardModels'  is null.");
+            }
+
+            var id = _userService.GetMyName();
+
+            var userModel = await _context.UserModels.FindAsync(int.Parse(id));
+
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+            //BankName bodyden gelcek
+
+            var myName = userModel.FirstName + " " + userModel.LastName;
+
+            creditCardModel.Balance = 0;
+            creditCardModel.UserModelId = int.Parse(id);
+            creditCardModel.UserName = myName;
+
+            Random generator = new Random();
+            int r = generator.Next(100, 1000);
+            long x = generator.NextInt64(1000000000000000, 10000000000000000);
+
+            creditCardModel.CVC = r;
+            creditCardModel.Number = x;
+
+            var year = int.Parse(DateTime.Now.ToString("yy")) + 10;
+            var strYear = year.ToString();
+            var strMonth = DateTime.Now.ToString("MM");
+
+            creditCardModel.ValidDate = strMonth + "/" + strYear;
+
+            _context.CreditCardModels.Add(creditCardModel);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("PostCreditCardModel", new { id = creditCardModel.Id }, creditCardModel);
+
+        }
+
         private bool UserModelExists(int id)
         {
             return (_context.UserModels?.Any(e => e.Id == id)).GetValueOrDefault();
