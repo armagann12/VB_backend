@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 namespace InvoiceApi.Models
 {
     [Index(nameof(Mail), IsUnique = true)]
+    [Index(nameof(TC), IsUnique = true)]
     public class UserModel
     {
         public int Id { get; set; }

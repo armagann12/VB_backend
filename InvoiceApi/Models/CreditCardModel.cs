@@ -1,5 +1,8 @@
-﻿namespace InvoiceApi.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace InvoiceApi.Models
 {
+    [Index(nameof(Number), IsUnique = true)]
     public class CreditCardModel
     {
         public int Id { get; set; }

@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace InvoiceApi.Models
 {
+    [Index(nameof(InvoiceNumber), IsUnique = true)]
     public class InvoiceModel
     {
         public int Id { get; set; }

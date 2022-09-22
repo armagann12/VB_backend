@@ -102,6 +102,12 @@ namespace InvoiceApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CreditCardModels_Number",
+                table: "CreditCardModels",
+                column: "Number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CreditCardModels_UserModelId",
                 table: "CreditCardModels",
                 column: "UserModelId");
@@ -118,6 +124,12 @@ namespace InvoiceApi.Migrations
                 column: "InstitutionModelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvoiceModels_InvoiceNumber",
+                table: "InvoiceModels",
+                column: "InvoiceNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvoiceModels_UserModelId",
                 table: "InvoiceModels",
                 column: "UserModelId");
@@ -126,6 +138,12 @@ namespace InvoiceApi.Migrations
                 name: "IX_UserModels_Mail",
                 table: "UserModels",
                 column: "Mail",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserModels_TC",
+                table: "UserModels",
+                column: "TC",
                 unique: true);
         }
 

@@ -53,6 +53,9 @@ namespace InvoiceApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Number")
+                        .IsUnique();
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("CreditCardModels");
@@ -134,6 +137,9 @@ namespace InvoiceApi.Migrations
 
                     b.HasIndex("InstitutionModelId");
 
+                    b.HasIndex("InvoiceNumber")
+                        .IsUnique();
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("InvoiceModels");
@@ -173,6 +179,9 @@ namespace InvoiceApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Mail")
+                        .IsUnique();
+
+                    b.HasIndex("TC")
                         .IsUnique();
 
                     b.ToTable("UserModels");

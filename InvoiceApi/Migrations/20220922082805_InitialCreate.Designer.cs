@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220920145006_InitialCreate")]
+    [Migration("20220922082805_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace InvoiceApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
 
                     b.HasIndex("UserModelId");
 
@@ -136,6 +139,9 @@ namespace InvoiceApi.Migrations
 
                     b.HasIndex("InstitutionModelId");
 
+                    b.HasIndex("InvoiceNumber")
+                        .IsUnique();
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("InvoiceModels");
@@ -175,6 +181,9 @@ namespace InvoiceApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Mail")
+                        .IsUnique();
+
+                    b.HasIndex("TC")
                         .IsUnique();
 
                     b.ToTable("UserModels");
