@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace InvoiceApi.Models
 {
@@ -11,6 +12,8 @@ namespace InvoiceApi.Models
         public int CVC { get; set; }
         public string? ValidDate { get; set; }
         public string? BankName { get; set; }
+
+        [Range(0, 9999.000)]
         public long Balance { get; set; }
         public int UserModelId { get; set; }
         public UserModel? UserModel { get; set; }
