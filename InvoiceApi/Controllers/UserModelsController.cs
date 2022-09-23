@@ -294,7 +294,55 @@ namespace InvoiceApi.Controllers
             }
 
         }
+        
+        [Authorize(Roles = "User")]
+        [HttpGet("test/{id}")]
+        public async Task<ActionResult<bool>> testPayMethod(int id, InvoiceModel invoiceModel)
+        {
+            var uid = _userService.GetMyName();
+            int[] arr= new int[5];
+            string[] dummyStr = {"a", "b", "c", "d", "e"};
+            int[] dummyInt = { 1, 2, 3, 4, 5 };
 
+            for(var i = 0; i<5; i++)
+            {
+                invoiceModel.Id = 0; //Reinit id
+                Random generator = new Random();
+                int r = generator.Next(100000, 1000000);
+                invoiceModel.Name = dummyStr[i];
+                invoiceModel.Price = dummyInt[i];
+                invoiceModel.Detail = dummyStr[i];
+                invoiceModel.InvoiceNumber = r;
+                invoiceModel.Month = DateTime.Now.ToString("MM");
+                invoiceModel.Status = false;
+                invoiceModel.InstitutionModelId = id;
+                invoiceModel.UserModelId = int.Parse(uid);
+
+                Console.WriteLine(invoiceModel.Name);
+
+                _context.InvoiceModels.Add(invoiceModel);
+
+                await _context.SaveChangesAsync();
+
+                arr[i] = invoiceModel.Id;
+
+                CreatedAtAction("testPayMethod", new { id = invoiceModel.Id }, invoiceModel);
+            }
+            for(var i= 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+         
+
+
+          
+
+            //pay each invoice in a loop for arraydakiler
+            //_rabitMQProducer.SendProductMessage(invoiceId);
+
+            return true;
+        }
+        
 
         private bool CreditCardModelExists(int id)
         {
