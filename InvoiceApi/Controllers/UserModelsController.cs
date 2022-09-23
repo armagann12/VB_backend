@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using InvoiceApi.Data;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using InvoiceApi.RabbitMQ;
 
 namespace InvoiceApi.Controllers
 {
@@ -17,11 +18,13 @@ namespace InvoiceApi.Controllers
     {
         private readonly DataContext _context;
         private readonly IUserService _userService;
+        private readonly IRabitMQProducer _rabitMQProducer;
 
-        public UserModelsController(DataContext context, IUserService userService)
+        public UserModelsController(DataContext context, IUserService userService, IRabitMQProducer rabitMQProducer)
         {
             _context = context;
             _userService = userService;
+            _rabitMQProducer = rabitMQProducer;
         }
 
         // GET: api/user
@@ -300,11 +303,11 @@ namespace InvoiceApi.Controllers
         public async Task<ActionResult<bool>> testPayMethod(int id, InvoiceModel invoiceModel)
         {
             var uid = _userService.GetMyName();
-            int[] arr= new int[5];
-            string[] dummyStr = {"a", "b", "c", "d", "e"};
-            int[] dummyInt = { 1, 2, 3, 4, 5 };
+            int[] arr= new int[25];
+            string[] dummyStr = {"a", "b", "c", "d", "e", "f", "g", "h","j", "k", "l", "m", "n","o", "p", "r", "s", "t","u","v","y","z","x","w","i"};
+            int[] dummyInt = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 };
 
-            for(var i = 0; i<5; i++)
+            for(var i = 0; i<25; i++)
             {
                 invoiceModel.Id = 0; //Reinit id
                 Random generator = new Random();
@@ -331,15 +334,10 @@ namespace InvoiceApi.Controllers
             for(var i= 0; i < arr.Length; i++)
             {
                 Console.WriteLine(arr[i]);
+                _rabitMQProducer.SendProductMessage(arr[i]);
+                Console.WriteLine("DOne");
             }
          
-
-
-          
-
-            //pay each invoice in a loop for arraydakiler
-            //_rabitMQProducer.SendProductMessage(invoiceId);
-
             return true;
         }
         
