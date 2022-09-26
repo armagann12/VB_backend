@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
+using System.Reflection;
 using System.Text;
 
 var myAllowSpesificOrigins = "_myAllowSpesificOrigins";
@@ -46,6 +47,9 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     });
+    options.EnableAnnotations();
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

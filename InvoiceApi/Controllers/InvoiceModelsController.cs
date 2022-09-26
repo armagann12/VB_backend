@@ -30,6 +30,9 @@ namespace InvoiceApi.Controllers
 
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
+        /// <summary>
+        /// Get Users Invoices
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("user")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetUsersInvoiceModels([FromQuery(Name = "status")] bool? status = null )
@@ -57,6 +60,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/invoice/user/5
+        /// <summary>
+        /// Get Users Invoice
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("user/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetUserInvoiceModel(int id)
@@ -83,6 +89,9 @@ namespace InvoiceApi.Controllers
 
         //  +param olarak filterlama al status true false
         // GET: api/invoice/user
+        /// <summary>
+        /// Get Institutions Invoices
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpGet("institution")]
         public async Task<ActionResult<IEnumerable<InvoiceModel>>> GetInstitutionsInvoiceModels(bool? status = null)
@@ -105,6 +114,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/invoice/user/5
+        /// <summary>
+        /// Get Institutions Invoice
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpGet("institution/{id}")]
         public async Task<ActionResult<InvoiceModel>> GetInstitutionInvoiceModel(int id)
@@ -128,59 +140,10 @@ namespace InvoiceApi.Controllers
             return invoiceModel;
         }
 
-        // PUT: api/invoice/me/5
-        [Authorize(Roles = "Institution")]
-        [HttpPut("me/{id}")]
-        public async Task<IActionResult> PutInvoiceModel(int id, InvoiceModel invoiceModel)
-        {
-            var uid = _userService.GetMyName();
-
-            if(uid == null)
-            {
-                return BadRequest();
-            }
-
-            /*
-            if (invoiceModel.InstitutionModelId != int.Parse(uid))
-            {
-                return NotFound();
-            }
-            */
-
-            var myInvoice = await _context.InvoiceModels.Where(u => u.InstitutionModelId == int.Parse(uid) && u.Id == id).FirstOrDefaultAsync();
-
-            if (myInvoice == null)
-            {
-                return NotFound();
-            }
-
-
-            myInvoice.Name = invoiceModel.Name;
-            myInvoice.Detail = invoiceModel.Detail;
-            myInvoice.Price = invoiceModel.Price;
-            
-            _context.Entry(myInvoice).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InvoiceModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/invoice
+        /// <summary>
+        /// Add Invoice
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpPost]
         public async Task<ActionResult<InvoiceModel>> PostInvoiceModel(InvoiceModel invoiceModel)
@@ -207,6 +170,9 @@ namespace InvoiceApi.Controllers
         }
 
         // DELETE: api/invoice/me/5
+        /// <summary>
+        /// Delete My Invoice
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpDelete("me/{id}")]
         public async Task<IActionResult> DeleteInvoiceModel(int id)
@@ -238,6 +204,9 @@ namespace InvoiceApi.Controllers
         }
 
         // Get: api/pay/id
+        /// <summary>
+        /// Pay My Invoice  
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("pay/{id}")]
         public async Task<ActionResult<bool>> PayInvoiceModel(int id)

@@ -9,6 +9,7 @@ using InvoiceApi.Data;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using InvoiceApi.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace InvoiceApi.Controllers
 {
@@ -25,7 +26,9 @@ namespace InvoiceApi.Controllers
             _userService = userService;
         }
 
-        // GET: api/institution
+        /// <summary>
+        /// Get Institutions
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InstitutionModel>>> GetInstitutionModels()
@@ -38,6 +41,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/institution/id
+        /// <summary>
+        /// Get Institution
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public async Task<ActionResult<InstitutionModel>> GetInstitutionModel(int id)
@@ -57,6 +63,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/institution/me
+        /// <summary>
+        /// Get Myself (institution)
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpGet("me")]
         public async Task<ActionResult<InstitutionModel>> GetMyInstitutionModel()
@@ -78,6 +87,9 @@ namespace InvoiceApi.Controllers
         }
 
         // PUT: api/institution/me
+        /// <summary>
+        /// Update Myself (institution)
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpPut("me")]
         public async Task<IActionResult> PutInstitutionModel(InstitutionModel institutionModel)

@@ -28,7 +28,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/user
-
+        /// <summary>
+        /// Get Users
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUserModels()
@@ -41,7 +43,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/user/5
-
+        /// <summary>
+        /// Get User
+        /// </summary>
         [Authorize(Roles = "Institution")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserModel(int id)
@@ -61,6 +65,9 @@ namespace InvoiceApi.Controllers
         }
 
         // GET: api/user
+        /// <summary>
+        /// Get Myself (user)
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("me")]
         public async Task<ActionResult<UserModel>> GetMyUserModel()
@@ -83,6 +90,9 @@ namespace InvoiceApi.Controllers
         }
 
         // PUT: api/user/me
+        /// <summary>
+        /// Update Myself (user)
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpPut("me")]
         public async Task<IActionResult> PutUserModel(UserModel userModel)
@@ -127,6 +137,9 @@ namespace InvoiceApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Add Card
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpPost("card")]
         public async Task<ActionResult<CreditCardModel>> PostCreditCardModel(CreditCardModel creditCardModel)
@@ -172,6 +185,9 @@ namespace InvoiceApi.Controllers
 
         }
 
+        /// <summary>
+        /// Get My Cards
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("card/me")]
         public async Task<ActionResult<IEnumerable<CreditCardModel>>> GetUsersCreditCardModels()
@@ -192,6 +208,9 @@ namespace InvoiceApi.Controllers
 
         }
 
+        /// <summary>
+        /// Get My Card
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("card/me/{id}")]
         public async Task<ActionResult<CreditCardModel>> GetUserCreditCardModel(int id)
@@ -218,6 +237,9 @@ namespace InvoiceApi.Controllers
             
         }
 
+        /// <summary>
+        /// Delete My Card
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpDelete("card/me/{id}")]
         public async Task<IActionResult> DeleteCreditCardModel(int id)
@@ -250,6 +272,9 @@ namespace InvoiceApi.Controllers
 
         }
 
+        /// <summary>
+        /// Add Money To My Card
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("card/me/money/{id}/{money}")]
         public async Task<ActionResult<bool>> uploadCreditCardModel(int id, int money)
@@ -297,7 +322,10 @@ namespace InvoiceApi.Controllers
             }
 
         }
-        
+
+        /// <summary>
+        /// Test Endpoint
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpGet("test/{id}")]
         public async Task<ActionResult<bool>> testPayMethod(int id, InvoiceModel invoiceModel)

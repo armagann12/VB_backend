@@ -26,7 +26,9 @@ namespace InvoiceApi.Controllers
             _userService = userService;
         }
 
-
+        /// <summary>
+        /// User Register
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("user/register")]
         public async Task<ActionResult<UserModel>>RegisterUser(UserRegisterDto request)
@@ -50,6 +52,9 @@ namespace InvoiceApi.Controllers
             return Ok(userModel); 
         }
 
+        /// <summary>
+        /// Institution Register
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("institution/register")]
         public async Task<ActionResult<InstitutionModel>>RegisterInstitution(InstitutionRegisterDto request)
@@ -73,6 +78,9 @@ namespace InvoiceApi.Controllers
             return Ok(institutionModel);
         }
 
+        /// <summary>
+        /// User Login
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("user/login")]
         public async Task<ActionResult<string>> UserLogin(UserDto request)
@@ -94,6 +102,9 @@ namespace InvoiceApi.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Institution Login
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("institution/login")]
         public async Task<ActionResult<string>> InstitutionLogin(InstitutionDto request) //dto
